@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<title>BeidouChain Explorer</title>
+
+<!-- Bootstrap and Theme -->
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		setInterval(function(){
+			$("#recenttx").load('updateHomePage?random=' + Math.random().toString() )}, 5000);
+		});
+</script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+</head>
+<body>
+	<div class="container">
+		<table>
+			<tr>			
+				<td>
+					<a title="Back to home" href="/">
+						<img src="image/beidouchain-logo.jpg" alt="BeidouChain logo" />
+					</a>
+				</td>
+				<td style="padding-left: 10px;" valign="middle">
+					<h1>
+						BeidouChain Explorer
+					</h1>
+				</td>
+			</tr>
+		</table>
+		<p>
+			<label>Search by address, block number, transaction or chain name:</label>
+		</p>
+		<form class="form-inline" action="search">
+			<div class="form-group">
+				<input id="search1" type="text" name="str" size="64"  style="height: 32px; margin-right: 10px;" />
+				<button type="submit" class="btn" style="height: 32px; vertical-align: middle;">Search</button>
+				<p class="help-block">Address or transaction search requires full characters.</p>
+			</div>
+		</form>
+		<table class="table table-striped">
+			<tr>
+				<th>Status</th>
+				<th>Chain</th>				
+				<th>Port</th>
+				<th>Blocks</th>
+				<th>Transactions</th>
+				<th>Assets</th>
+				<th>Streams</th>
+				<th>Peers</th>
+				<th>Started</th>
+				<th>Age (days)</th>
+			</tr>
+			<tr>
+				<td><span class="label label-success">Connected</span></td>
+				<td><a href="/chain" th:text="${homePage.chainName}" ></a></td>				
+				<td th:text="${homePage.port}" />	
+				<td><a th:href="@{blocks}" th:text="${homePage.chainBlockHeight}" ></a></td>
+				<td th:text="${homePage.transactionsNum}" />
+				<td><a th:href="@{assets}"  th:text="${homePage.assetNum}" ></a></td>			
+				<td><a th:href="@{streams}" th:text="${homePage.streamNum}"></a></td>
+				<td th:text="${homePage.peerNum}" />
+				<td th:text="${homePage.formatStarted}" />
+				<td th:text="${homePage.formatAge}" />
+			</tr>
+		</table>
+		<div id="recenttx">
+			<h3>Latest Transactions</h3>
+			<table class="table table-striped">
+				<tr>
+					<th>Txid</th>
+					<th>Type</th>
+					<th>Confirmation</th>
+					<th>Time</th>
+				</tr>
+				<tr th:each="trans:${transList}">
+					<td><a th:href="@{'tx?txId=' + ${trans.txid}}" th:text="${trans.txid}"></a></td>
+					<td><span th:each="t:${trans.type}">&nbsp;<span class="label label-primary"  th:text="${t}" /></span></td>
+					<td><span class="label label-info" th:text="${trans.confirmation} + ' ' + confirmation" /></td>
+					<td th:text="${trans.formatAge}" />
+				</tr>				
+			</table>
+		</div>
+		<br />
+		<br />
+		<div th:include="footer :: powered"></div>
+	</div>
+</body>
+</html>

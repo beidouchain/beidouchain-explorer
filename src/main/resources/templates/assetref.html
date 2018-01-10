@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asset</title>
+<!-- Bootstrap and Theme -->
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+	<div class="container">
+		<table>
+			<tr>
+				<td><a title="Back to home" href="/"><img src="image/beidouchain-logo.jpg" alt="BeidouChain logo" /></a></td>
+				<td style="padding-left: 10px;" valign="middle"><h1 th:text="${homePage.chainName}"></h1></td>
+			</tr>
+		</table>
+		<h3 th:text="Asset"></h3>
+		<table class="table table-bordered table-condensed">
+			<tr th:each="asset:${assetMap}">
+				<td th:text="${asset.key}"></td>
+				<td th:text="${asset.value}"></td>
+			</tr>			
+		</table>
+		<br /> <br />
+		<div th:include="footer :: powered"></div>
+	</div>
+</body>
+</html>

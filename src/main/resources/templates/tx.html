@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title th:text="'Transaction	' + ${txid}"></title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+	<div class="container">
+		<table>
+			<td>
+				<a title="Back to home" href="/" ><img src="image/beidouchain-logo.jpg" alt="BeidouChain logo" /></a>
+			</td>
+			<td style="padding-left: 10px;" valign="middle">
+				<h1 th:text="'Transaction	' + ${#strings.abbreviate(txid,30)}"></h1>
+			</td>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tr>
+				<td>Hash</td>
+				<td th:text="${txid}"></td>
+			</tr>
+			<tr>
+				<td>Appeared in Block(HASH)</td>
+				<td>
+					<a th:href="@{'block?hash=' + ${blockhash}}" th:text="${blockhash}"></a> 
+					<span th:text="'(' + ${blocktime} + ')'">(2017-09-28 09:06:39)</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Number of inputs</td>
+				<td><span th:text="${vin.size()}" /> &ndash; <a href="#inputs">jump to inputs</a></td>
+			</tr>
+			<tr>
+				<td>Number of outputs</td>
+				<td><span th:text="${vout.size()}" /> &ndash; <a href="#outputs">jump to outputs</a></td>
+			</tr>	
+			<tr>
+				<td>confirmations</td>
+				<td th:text="${confirmations}"/>
+			</tr>		
+		</table>
+		<p class="text-right">
+			 <a role="button" class="btn btn-default btn-xs" th:href="@{'txjson?txId=' + ${txid}}">beidouChain JSON</a>
+			 <a role="button" class="btn btn-default btn-xs" th:href="@{'txraw?txId=' + ${txid}}">beidouChain Hex</a>
+		</p>
+		<a name="inputs"><h3>Inputs</h3></a>
+		<table class="table table-striped">
+			<tr>
+				<th>Index</th>
+				<th>Previous output</th>
+				<th>From address</th>
+				<th>desc</th>
+				<th>ScriptSig</th>
+			</tr>
+			<tr th:each="in,stat:${vin}">
+				<td th:text="${stat.index}"></td>
+				<td><a th:if="${in.preTxid}" th:href="@{'tx?txId=' + ${in.preTxid}}" th:text="${#strings.abbreviate(in.preTxid,20)} + ':' + ${in.preIndex}" /></td>
+				<td><a th:href="@{'address?address=' + ${in.address}}" th:text="${in.address}"/></td>
+				<td th:text="${in.desc}"></td>
+				<td style="max-width: 400px;">72:3045...d701 33:03a1...df23</td>
+			</tr>
+		</table>
+		<a name="outputs"><h3>Outputs</h3></a>
+		<table class="table table-striped">
+			<tr>
+				<th>Index</th>
+				<th style="width: 100px;">To address</th>
+				<th>desc</th>
+				<th style="max-width: 400px;">ScriptPubKey</th>				
+			</tr>
+			<tr th:each="out,stat:${vout}">
+				<td th:text="${stat.index}"></td>
+				<td th:unless="${out.address}">None</td>
+				<td th:if="${out.address}"><a th:href="@{'address?address=' + ${out.address}}" th:text="${out.address}"/></td>			
+				<td th:utext="${out.desc}"></td>
+				<td style="max-width: 400px;" th:text="${out.scriptPubkey}"></td>
+			</tr>			
+		</table>
+		<br /><br />
+    	<div th:include="footer :: powered"></div>
+	</div>
+</body>
+</html>

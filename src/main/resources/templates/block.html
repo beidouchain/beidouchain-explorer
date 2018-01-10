@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<title th:text="'coreChain - Block ' + ${map.get('height')}"></title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<table>
+			<td><a title="Back to home" href="/"><img src="image/beidouchain-logo.jpg" alt="BeidouChain logo" /></a></td>
+			<td style="padding-left: 10px;" valign="middle">
+				<h1 th:text="'coreChain - Block ' + ${map.get('height')}"></h1>
+			</td>
+		</table>
+		<nav>
+			<ul class="pager">
+				<li class="previous" th:if="${map.get('previousblockhash')}">
+					<a th:href="@{'block?hash=' + ${map.get('previousblockhash')}}">
+						<span aria-hidden="true">&larr;</span> Older
+					</a>
+				</li>
+				<li class="next" th:if="${map.get('nextblockhash')}">
+					<a th:href="@{'block?hash=' + ${map.get('nextblockhash')}}">Newer
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<h3>Block Summary</h3>
+		<table class="table table-bordered table-condensed">
+			<tr>
+				<td>Hash</td>
+				<td th:text="${map.get('hash')}" />
+			</tr>
+			<tr>
+				<td>Previous Block</td>
+				<td><a th:href="@{'block?hash=' + ${map.get('previousblockhash')}}" th:text="${map.get('previousblockhash')}" /></td>
+			</tr>
+			<tr>
+				<td>Next Block</td>
+				<td><a th:href="@{'block?hash=' + ${map.get('nextblockhash')}}" th:text="${map.get('nextblockhash')}" /></td>
+			</tr>
+			<tr>
+				<td>Height</td>
+				<td th:text="${map.get('height')}"></td>
+			</tr>
+			<tr>
+				<td>Miner</td>
+				<td><a th:href="@{'address?address=' + ${map.get('miner')}}" th:text="${map.get('miner')}"/></td>
+			</tr>
+			<tr>
+				<td>Version</td>
+				<td th:text="${map.get('version')}">3</td>
+			</tr>
+			<tr>
+				<td>Transaction Merkle Root</td>
+				<td th:text="${map.get('merkleroot')}"></td>
+			</tr>
+			<tr>
+				<td>Time</td>
+				<td th:text="${map.get('time')} + '(  ' + ${time} + ')'"></td>
+			</tr>
+			<tr>
+				<td>Nonce</td>
+				<td th:text="${map.get('nonce')}" />
+			</tr>
+			<tr>
+				<td>Transactions</td>
+				<td th:text="${map.get('tx').size()}" />
+			</tr>
+		</table>
+		<h3>Transactions</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Transaction</th>				
+			</tr>
+			<tr class="success" th:each="tx:${map.get('tx')}">
+				<td><a th:href="@{'tx?txId=' + ${tx}}" th:text="${tx}" /></td>
+			</tr>
+		</table>
+		<br /><br />
+	    <div th:include="footer :: powered"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<title>Assets</title>
+
+<!-- Bootstrap and Theme -->
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+	<div class="container">
+		<table>
+			<tr>
+				<td><a title="Back to home" href="/" ><img src="image/beidouchain-logo.jpg" alt="BeidouChain logo" /></a></td>
+				<td style="padding-left: 10px;" valign="middle"><h1 th:text="${homePage.chainName}"></h1></td>
+			</tr>
+		</table>
+		<h3>Assets</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Asset Name</th>
+				<th>Asset Reference</th>
+				<th>Issue Transaction</th>
+				<th>Issued Quantity</th>
+				<th>Units</th>
+			</tr>
+			<tr th:each="asset:${assets}">
+				<td><a th:href="@{'/assetref?ref=' + ${asset.assetref}}" th:text="${asset.get('name')}"></a></td>
+				<td><a th:href="@{'/assetref?ref=' + ${asset.assetref}}" th:text="${asset.get('assetref')}"></a></td>
+				<td><a th:href="@{'/tx?txId=' + ${asset.get('issuetxid')}}" th:text="${asset.get('issuetxid')}"></a></td>
+				<td th:text="${asset.get('issueqty')}">50000</td>
+				<td th:text="${asset.get('units')}">1</td>
+			</tr>			
+		</table>
+		<!--<p><a href="../q">API</a> (machine-readable pages)</p>-->
+		<br />
+		<br />
+		<div th:include="footer :: powered"></div>
+	</div>
+</body>
+</html>

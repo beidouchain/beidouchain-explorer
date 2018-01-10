@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head/>
+<body>	
+	<div id="recenttx">
+		<h3>Latest Transactions</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Txid</th>
+				<th>Type</th>
+				<th>Confirmation</th>
+				<th>Time</th>
+			</tr>
+			<tr th:each="trans:${transList}">
+				<td><a th:href="@{'tx?txId=' + ${trans.txid}}"
+					th:text="${trans.txid}"></a></td>
+				<td><span th:each="t:${trans.type}">&nbsp;<span
+						class="label label-primary" th:text="${t}" /></span></td>
+				<td><span class="label label-info"
+					th:text="${trans.confirmation} + ' ' + confirmation" /></td>
+				<td th:text="${trans.formatAge}" />
+			</tr>
+		</table>
+	</div>		
+</body>
+</html>
